@@ -4,5 +4,5 @@ It halves the video resolution (keeping the aspect ratio) and sets the video bit
 
 # Usage: 
 ```bash
-./compresser.sh -i <input_dir> -o <output_dir>
+./compress.sh -i <input_dir> -o <output_dir>
 ```
