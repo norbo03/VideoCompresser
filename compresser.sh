@@ -46,7 +46,8 @@ find "$INPUT_DIR" -type f -exec file -N -i -- {} + | grep video | cut -d':' -f1\
     echo "$filename is already compressed"
   else
     echo "Compressing $filename"
-    ffmpeg -i $file -c:v libx264 -preset ultrafast -crf $CRF -c:a copy "$TEMP_DIR/$filename" < /dev/null
+    ffmpeg -i "$filename" -vf "scale=iw/2:ih/2:force_original_aspect_ratio=decrease" -b:v 5000k "$TEMP_DIR/$filename"
+    #ffmpeg -i $file -c:v libx264 -preset ultrafast -crf $CRF -c:a copy "$TEMP_DIR/$filename" < /dev/null
     mv "$TEMP_DIR/$filename" "$COMPRESSED_FILE"
 
   fi
