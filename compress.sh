@@ -30,8 +30,6 @@ echo -e "INPUT_DIR=$INPUT_DIR\nOUTPUT_DIR=$OUTPUT_DIR\nCRF=$CRF"
 mkdir -p "$OUTPUT_DIR"
 TEMP_DIR=$(mktemp -d)
 
-#ffmpeg -i  -c:v libx264
-
 find "$INPUT_DIR" -type f -exec file -N -i -- {} + | grep video | cut -d':' -f1\
 | while read -r file; do
   filename=$(basename "$file")
@@ -46,7 +44,7 @@ find "$INPUT_DIR" -type f -exec file -N -i -- {} + | grep video | cut -d':' -f1\
     echo "$filename is already compressed"
   else
     echo "Compressing $filename"
-    ffmpeg -i "$filename" -vf "scale=iw/2:ih/2:force_original_aspect_ratio=decrease" -b:v 5000k "$TEMP_DIR/$filename" < /dev/null
+    ffmpeg -i "$file" -vf "scale=iw/2:ih/2:force_original_aspect_ratio=decrease" -b:v 5000k "$TEMP_DIR/$filename"
     #ffmpeg -i $file -c:v libx264 -preset ultrafast -crf $CRF -c:a copy "$TEMP_DIR/$filename" < /dev/null
     mv "$TEMP_DIR/$filename" "$COMPRESSED_FILE"
 
